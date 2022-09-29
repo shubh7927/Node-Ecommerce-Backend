@@ -23,7 +23,7 @@ exports.signup = async (req, res, next) => {
         }
 
         if (req.files) {
-            const result = await uploadImage(req.files.picture,'profilepic');
+            const result = await uploadImage(req.files.picture, 'profilepic');
             req.body.profilePic = result;
         }
 
@@ -322,7 +322,9 @@ exports.deleteUser = async (req, res, next) => {
                 message: "User Not found"
             })
         }
-        await deleteImage(user.profilePic.public_id);
+        if (user.profilePic) {
+            await deleteImage(user.profilePic.public_id);
+        }
         await User.findByIdAndDelete(req.params.id);
         return res.status(200).json({
             success: true,
