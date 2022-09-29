@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    images: [{
+    image: {
         public_id: {
             type: String,
             required: true
@@ -26,7 +26,7 @@ const productSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }],
+    },
     stock: {
         type: Number,
         default: 1

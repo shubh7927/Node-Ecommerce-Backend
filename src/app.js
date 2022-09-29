@@ -16,21 +16,21 @@ const productRoutes = require("./api/routes/product.js");
 const userRoutes = require("./api/routes/user.js");
 const orderRoutes = require("./api/routes/order.js");
 
-dotenv.config({path:"./.env"});
+dotenv.config({ path: "./.env" });
 
 //Database Connection
-mongoose.connect(process.env.DB_URL,{
-    useNewURLParser:true,
-    useUnifiedTopology:true
+mongoose.connect(process.env.DB_URL, {
+    useNewURLParser: true,
+    useUnifiedTopology: true
 })
-.then(()=> console.log("Database Connected Successfully"))
-.catch(err => console.log(err));
+    .then(() => console.log("Database Connected Successfully"))
+    .catch(err => console.log(err));
 
 //Cloudinary Configuration
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key:process.env.CLOUDINARY_API_KEY,
-    api_secret:process.env.CLOUDINARY_API_SECRET
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // Library Configuration
@@ -57,9 +57,9 @@ app.use(fileUpload({
     useTempFiles:true
 }));
 app.use(cookieParser());
-app.use("/product",productRoutes);
-app.use("/user",userRoutes);
-app.use("/order",orderRoutes);
+app.use("/product", productRoutes);
+app.use("/user", userRoutes);
+app.use("/order", orderRoutes);
 
 //Global Error Handler
 app.use((req, res, next) => {

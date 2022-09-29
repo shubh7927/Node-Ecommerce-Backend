@@ -4,12 +4,12 @@ const dotenv = require("dotenv");
 const validator = require("validator");
 const cloudinary = require('cloudinary');
 const crypto = require('crypto');
+
 const User = require("../models/user.js");
 const sendEmail = require("../utils/sendEmail.js");
-const { validate } = require('../models/user.js');
+const { uploadImage } = require('../utils/uploadImage.js');
 
 dotenv.config({ path: "./.env" });
-
 
 //Signup a new user
 exports.signup = async (req, res, next) => {
@@ -23,15 +23,8 @@ exports.signup = async (req, res, next) => {
         }
 
         if (req.files) {
-            const result = await cloudinary.v2.uploader.upload(req.files.picture.tempFilePath, {
-                folder: 'profilepic'
-            })
-            console.log(result);
-
-            req.body.profilePic = {
-                public_id: result.public_id,
-                url: result.secure_url
-            }
+            const result = await uploadImage(req.files.picture,'profilepic');
+            req.body.profilePic = result;
         }
 
 

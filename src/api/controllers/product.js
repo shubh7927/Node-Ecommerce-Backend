@@ -1,14 +1,20 @@
 const Product = require("../models/product.js");
+const { uploadImage } = require('../utils/uploadImage.js');
 
 //Create a new Product
 exports.createProduct = async (req, res, next) => {
     try {
         req.body.createdBy = req.userData.id;
         req.body.category = req.body.category.toLowerCase();
-        const product = await Product.create(req.body);
+
+        const productImage = req.files.productImage;
+        const imageData = await uploadImage(productImage,'productimages');
+        req.body.image = imageData;
+        
+        const product = await Product.create({ ...req.body });
         return res.status(201).json({
             success: true,
-            message:"Product Created successfully",
+            message: "Product Created successfully",
             product
         })
     } catch (error) {
@@ -98,7 +104,7 @@ exports.updateProduct = async (req, res, next) => {
         });
         return res.status(200).json({
             success: true,
-            message:"Product Updated Successfully",
+            message: "Product Updated Successfully",
             product
         })
     } catch (error) {
