@@ -7,7 +7,7 @@ const crypto = require('crypto');
 
 const User = require("../models/user.js");
 const sendEmail = require("../utils/sendEmail.js");
-const { uploadImage } = require('../utils/uploadImage.js');
+const { uploadImage, deleteImage } = require('../utils/handleImages.js');
 
 dotenv.config({ path: "./.env" });
 
@@ -322,7 +322,8 @@ exports.deleteUser = async (req, res, next) => {
                 message: "User Not found"
             })
         }
-        await user.remove();
+        await deleteImage(user.profilePic.public_id);
+        await User.findByIdAndDelete(req.params.id);
         return res.status(200).json({
             success: true,
             message: "User Deleted Successfully"

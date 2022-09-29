@@ -1,5 +1,5 @@
 const Product = require("../models/product.js");
-const { uploadImage } = require('../utils/uploadImage.js');
+const { uploadImage,deleteImage } = require('../utils/handleImages.js');
 
 //Create a new Product
 exports.createProduct = async (req, res, next) => {
@@ -125,7 +125,8 @@ exports.deleteProduct = async (req, res, next) => {
                 message: "Product doesn't exist."
             })
         }
-        await Product.remove(product);
+        await deleteImage(product.image.public_id);
+        await Product.findByIdAndDelete(req.params.id);
         return res.status(200).json({
             success: true,
             message: "Product deleted Successfully"
