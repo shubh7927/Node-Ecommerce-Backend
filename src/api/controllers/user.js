@@ -32,7 +32,6 @@ exports.signup = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         req.body.password = hashedPassword;
 
-        console.log(req.body);
         //Saving User in DB
         const user = await User.create(req.body);
 
@@ -119,7 +118,6 @@ exports.logout = async (req, res, next) => {
 
 //Generate Reset Password Link and send on mail.
 exports.generateResetPasswordLink = async (req, res, next) => {
-    console.log(req.body.email);
     const user = await User.findOne({ email: req.body.email });
     try {
         const resetToken = crypto.randomBytes(20).toString("hex");

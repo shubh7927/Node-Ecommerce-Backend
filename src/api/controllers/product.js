@@ -92,7 +92,7 @@ exports.getSingleProduct = async (req, res, next) => {
 //Update a product
 exports.updateProduct = async (req, res, next) => {
     try {
-        console.log(req.body);
+        
         let product = await Product.findById(req.params.id);
         if (!product) {
             return res.status(404).json({
