@@ -1,16 +1,19 @@
 const Product = require("../models/product.js");
-const { uploadImage,deleteImage } = require('../utils/handleImages.js');
+const { generateNum } = require("../utils/generateRandomNum.js");
+const { uploadImage, deleteImage } = require('../utils/handleImages.js');
+
 
 //Create a new Product
 exports.createProduct = async (req, res, next) => {
     try {
         req.body.createdBy = req.userData.id;
         req.body.category = req.body.category.toLowerCase();
+        req.body.rating = generateNum();
 
         const productImage = req.files.productImage;
-        const imageData = await uploadImage(productImage,'productimages');
+        const imageData = await uploadImage(productImage, 'productimages');
         req.body.image = imageData;
-        
+
         const product = await Product.create({ ...req.body });
         return res.status(201).json({
             success: true,

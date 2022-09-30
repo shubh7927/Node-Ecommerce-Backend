@@ -31,15 +31,19 @@ const productSchema = new mongoose.Schema({
         type: Number,
         default: 1
     },
-    createdBy:{
-        type:mongoose.Schema.ObjectId,
-        ref:"User",
-        required:true
+    rating: {
+        type: Number,
+        default: 0
     },
-    createdAt:{
+    createdBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: true
+    },
+    createdAt: {
         type: Date,
         default: Date.now()
     }
 })
 
-module.exports = mongoose.model("Product",productSchema);
+module.exports = mongoose.model("Product", productSchema);
