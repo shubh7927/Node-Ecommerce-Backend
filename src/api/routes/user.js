@@ -1,5 +1,5 @@
 const express = require('express');
-const { signin, signup, logout, resetPassword, generateResetPasswordLink, viewProfile, getAllUsers, updateProfile, getSingleUser, updateUserAccess, deleteUser } = require('../controllers/user');
+const { signin, signup, logout, resetPassword, generateResetPasswordLink, viewProfile, getAllUsers, updateProfile, getSingleUser, updateUserAccess, deleteUser, viewMyCart, addToCart, deleteFromCart } = require('../controllers/user');
 const { isUserAuthorized, checkAccessLevel } = require('../middlewares/authCheck.js');
 const router = express.Router();
 
@@ -23,6 +23,15 @@ router.get("/profile", isUserAuthorized, viewProfile);
 
 //User Update his/her own Profile --> Logged In User
 router.patch("/profile/update", isUserAuthorized, updateProfile);
+
+//View My Cart
+router.get("/cart", isUserAuthorized, viewMyCart);
+
+//Add To Cart
+router.post("/cart", isUserAuthorized, addToCart);
+
+//Delete From Cart
+router.delete("/cart/:productId", isUserAuthorized, deleteFromCart);
 
 //Get All Users --> SuperAdmin
 router.get("/", isUserAuthorized, checkAccessLevel("superadmin"), getAllUsers);

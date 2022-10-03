@@ -250,6 +250,61 @@ exports.updateProfile = async (req, res, next) => {
 
 }
 
+//View My Cart
+exports.viewMyCart = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.userData.id).populate("cart");
+        const cartItems = user.cart;
+        return res.status(200).json({
+            success: true,
+            cartItems
+        })
+    } catch (error) {
+        console.log(error.stack);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}
+
+//Add Item To cart
+exports.addToCart = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.userData.id);
+        user.cart.push(req.body.product);
+        await user.save({ validateModifiedOnly: true });
+        return res.status(200).json({
+            success: true,
+            cart: user.cart
+        })
+    } catch (error) {
+        console.log(error.stack);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}
+
+//Delete Item from cart
+exports.deleteFromCart = async (req, res, next) => {
+    try {
+        const productId = req.params.productId;
+        const user = await User.findById(req.userData.id).populate("cart");
+        const idx = user.cart.findIndex(item => item._id === productId);
+        user.cart.splice(idx, 1);
+        await user.save({ validateModifiedOnly: true });
+        return res.status(200).json({
+            success: true,
+            message: `Item removed from cart`
+        })
+    } catch (error) {
+        console.log(error.stack);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        })
+    }
+}
+
 //Get All Users
 exports.getAllUsers = async (req, res, next) => {
     try {

@@ -26,10 +26,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "user"
     },
-    joinedOn:{
-        type:Date,
-        default:Date.now()
+    joinedOn: {
+        type: Date,
+        default: Date.now()
     },
+    cart: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "Product"
+    }],
     resetPasswordCode: String,
     resetPasswordExpiry: Date
 })

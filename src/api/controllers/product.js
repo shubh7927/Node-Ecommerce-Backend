@@ -7,7 +7,6 @@ const { uploadImage, deleteImage } = require('../utils/handleImages.js');
 exports.createProduct = async (req, res, next) => {
     try {
         req.body.createdBy = req.userData.id;
-        req.body.category = req.body.category.toLowerCase();
         req.body.rating = generateNum();
 
         const productImage = req.files.productImage;
@@ -92,7 +91,7 @@ exports.getSingleProduct = async (req, res, next) => {
 //Update a product
 exports.updateProduct = async (req, res, next) => {
     try {
-        
+
         let product = await Product.findById(req.params.id);
         if (!product) {
             return res.status(404).json({
