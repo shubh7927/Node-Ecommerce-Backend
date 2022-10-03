@@ -253,7 +253,7 @@ exports.updateProfile = async (req, res, next) => {
 //View My Cart
 exports.viewMyCart = async (req, res, next) => {
     try {
-        const user = await User.findById(req.userData.id).populate("cart");
+        const user = await User.findById(req.userData.id).populate("cart.product");
         const cartItems = user.cart;
         return res.status(200).json({
             success: true,
@@ -271,10 +271,20 @@ exports.viewMyCart = async (req, res, next) => {
 exports.addToCart = async (req, res, next) => {
     try {
         const user = await User.findById(req.userData.id);
-        user.cart.push(req.body.product);
+        const cartItem = user.cart.find(item => item.product == req.body.product);
+        if (cartItem) {
+            cartItem.quantity++;
+        } else {
+            const item = {
+                product: req.body.product,
+                quantity: 1
+            }
+            user.cart.push(item);
+        }
         await user.save({ validateModifiedOnly: true });
         return res.status(200).json({
             success: true,
+            message: "Added To Cart Successfully",
             cart: user.cart
         })
     } catch (error) {
@@ -289,9 +299,14 @@ exports.addToCart = async (req, res, next) => {
 exports.deleteFromCart = async (req, res, next) => {
     try {
         const productId = req.params.productId;
-        const user = await User.findById(req.userData.id).populate("cart");
-        const idx = user.cart.findIndex(item => item._id === productId);
-        user.cart.splice(idx, 1);
+        const user = await User.findById(req.userData.id);
+        const idx = user.cart.findIndex(item => item.product == productId);
+        console.log(idx);
+        if (user.cart[idx].quantity > 1) {
+            user.cart[idx].quantity--;
+        } else {
+            user.cart.splice(idx, 1);
+        }
         await user.save({ validateModifiedOnly: true });
         return res.status(200).json({
             success: true,

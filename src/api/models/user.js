@@ -30,10 +30,15 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     },
-    cart: [{
-        type: mongoose.Schema.ObjectId,
-        ref: "Product"
-    }],
+    cart: [
+        {
+            product: {
+                type: mongoose.Schema.ObjectId,
+                ref: "Product"
+            },
+            quantity: Number
+        }
+    ],
     resetPasswordCode: String,
     resetPasswordExpiry: Date
 })
