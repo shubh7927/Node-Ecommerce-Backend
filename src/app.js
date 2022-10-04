@@ -16,7 +16,7 @@ const productRoutes = require("./api/routes/product.js");
 const userRoutes = require("./api/routes/user.js");
 const orderRoutes = require("./api/routes/order.js");
 
-dotenv.config({ path: "./.env" });
+dotenv.config();
 
 //Database Connection
 mongoose.connect(process.env.DB_URL, {
@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(fileUpload({
-    useTempFiles:true
+    useTempFiles: true
 }));
 app.use(cookieParser());
 app.use("/product", productRoutes);

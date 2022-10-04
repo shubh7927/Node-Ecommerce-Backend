@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-require("dotenv").config({ path: "backend/.env" });
 const sendEmail = async (emailObject) => {
     const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com",

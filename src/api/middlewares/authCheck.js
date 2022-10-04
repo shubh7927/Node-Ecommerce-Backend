@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user.js");
-require("dotenv").config({ path: "backend/.env" });
 
 exports.isUserAuthorized = async (req, res, next) => {
     try {

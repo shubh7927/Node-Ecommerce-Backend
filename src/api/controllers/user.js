@@ -1,15 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
 const validator = require("validator");
-const cloudinary = require('cloudinary');
 const crypto = require('crypto');
 
 const User = require("../models/user.js");
 const sendEmail = require("../utils/sendEmail.js");
 const { uploadImage, deleteImage } = require('../utils/handleImages.js');
 
-dotenv.config({ path: "./.env" });
+
 
 //Signup a new user
 exports.signup = async (req, res, next) => {
