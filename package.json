@@ -2,11 +2,11 @@
   "name": "ecommerce_app",
   "version": "1.0.0",
   "description": "Full Stack Ecommerce app as final project submission for the completion of Full Stack with Javascript Course ",
-  "main": "backend/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node backend/index.js",
-    "dev": "nodemon backend/index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "keywords": [
     "final_project",
