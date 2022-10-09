@@ -12,8 +12,6 @@ router.get("/myorders", isUserAuthorized, viewMyOrders);
 //Get all orders --> SuperAdmin
 router.get("/", isUserAuthorized, checkAccessLevel("superadmin"), getAllOrders);
 
-//Get single order --> SuperAdmin
-router.get("/:id", isUserAuthorized, checkAccessLevel("superadmin"), getSingleOrder);
 
 //Update Order Status --> SuperAdmin
 router.patch("/:id", isUserAuthorized, checkAccessLevel("superadmin"), updateOrderStatus);
