@@ -13,6 +13,6 @@ router.get("/myorders", isUserAuthorized, viewMyOrders);
 router.get("/", isUserAuthorized, checkAccessLevel("superadmin"), getAllOrders);
 
 //Update Order Status --> SuperAdmin,Admin
-router.patch("/update", isUserAuthorized, checkAccessLevel("superadmin", "admin"), updateOrderStatus);
+router.patch("/update", isUserAuthorized, checkAccessLevel("superadmin"), updateOrderStatus);
 
 module.exports = router;
