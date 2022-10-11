@@ -8,7 +8,6 @@ const sendEmail = require("../utils/sendEmail.js");
 const { uploadImage, deleteImage } = require('../utils/handleImages.js');
 
 
-
 //Signup a new user
 exports.signup = async (req, res, next) => {
     try {

@@ -5,8 +5,7 @@ const router = express.Router();
 
 
 //Create a new product --> Admin
-router.post("/", isUserAuthorized, checkAccessLevel("admin","superadmin"), createProduct);
-// router.post("/",createProduct);
+router.post("/", isUserAuthorized, checkAccessLevel("admin", "superadmin"), createProduct);
 
 //Get all products
 router.get("/", getAllProducts);
@@ -15,9 +14,9 @@ router.get("/", getAllProducts);
 router.get("/:id", getSingleProduct);
 
 //Update a Product --> Admin  
-router.patch("/:id", isUserAuthorized, checkAccessLevel("admin","superadmin"), updateProduct);
+router.patch("/:id", isUserAuthorized, checkAccessLevel("admin", "superadmin"), updateProduct);
 
 //Delete a Product --> Admin  
-router.delete("/:id", isUserAuthorized, checkAccessLevel("admin","superadmin"), deleteProduct);
+router.delete("/:id", isUserAuthorized, checkAccessLevel("admin", "superadmin"), deleteProduct);
 
 module.exports = router;
