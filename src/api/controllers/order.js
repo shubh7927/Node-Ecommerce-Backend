@@ -49,7 +49,7 @@ exports.placeNewOrder = async (req, res, next) => {
 //View My orders
 exports.viewMyOrders = async (req, res, next) => {
     try {
-        const orders = await Order.find({ orderedBy: req.userData.id });
+        const orders = await Order.find({ orderedBy: req.userData.id }).populate("orderItems.product");
         return res.status(200).json({
             success: true,
             orders
@@ -65,7 +65,7 @@ exports.viewMyOrders = async (req, res, next) => {
 //Get All Orders
 exports.getAllOrders = async (req, res, next) => {
     try {
-        const orders = await Order.find().populate("orderedBy").populate("cart.products");
+        const orders = await Order.find().populate(["orderedBy", "orderItems.product"]);
         return res.status(200).json({
             success: true,
             orders
@@ -78,46 +78,32 @@ exports.getAllOrders = async (req, res, next) => {
     }
 }
 
-//Get Single Order
-// exports.getSingleOrder = async (req, res, next) => {
-//     try {
-//         const order = await Order.findById(req.params.id).populate("orderedBy");
-//         if (!order) {
-//             return res.status(404).json({
-//                 message: "Order doesn't Exist."
-//             })
-//         }
-//         return res.status(200).json({
-//             success: true,
-//             order
-//         })
-//     } catch (error) {
-//         console.log(error.stack);
-//         return res.status(500).json({
-//             message: "Internal Server Error"
-//         })
-//     }
-// }
-
 //Update Order Status
 exports.updateOrderStatus = async (req, res, next) => {
     try {
-        const order = await Order.findById(req.params.id).populate("orderedBy");
+        const order = await Order.findById(req.query.oid);
         if (!order) {
             return res.status(400).json({
                 message: "Order doesn't Exist."
             })
         }
-        if (order.orderStatus.toLowerCase() === "delievered") {
+
+        const orderItem = order.orderItems.find(item => item.product._id == req.query.pid);
+        if (!orderItem) {
             return res.status(400).json({
-                message: "Cannot change status because order is already delievered"
+                message: "Order doesn't Exist."
             })
         }
-        order.orderStatus = req.body.orderStatus;
+        if (orderItem.status.toLowerCase() === "delivered") {
+            return res.status(400).json({
+                message: "Cannot change status because order is already delivered"
+            })
+        }
+        orderItem.status = req.body.newStatus;
         await order.save({ validateBeforeSave: false });
         return res.status(200).json({
             message: "Order Status updated.",
-            order
+            orderItem
         })
     } catch (error) {
         console.log(error.stack);
@@ -126,25 +112,3 @@ exports.updateOrderStatus = async (req, res, next) => {
         })
     }
 }
-
-//Delete a order
-exports.deleteOrder = async (req, res, next) => {
-    try {
-        const order = await Order.findById(req.params.id)
-        if (!order) {
-            return res.status(400).json({
-                message: "Order doesn't Exist."
-            })
-        }
-        await order.remove();
-        return res.status(200).json({
-            message: "Order deleted Successfully."
-        })
-    } catch (error) {
-        console.log(error.stack);
-        return res.status(500).json({
-            message: "Internal Server Error"
-        })
-    }
-}
-

@@ -1,5 +1,5 @@
 const express = require('express');
-const { placeNewOrder, viewMyOrders, getSingleOrder, getAllOrders, updateOrderStatus, deleteOrder } = require('../controllers/order');
+const { placeNewOrder, viewMyOrders, getAllOrders, updateOrderStatus } = require('../controllers/order');
 const { isUserAuthorized, checkAccessLevel } = require('../middlewares/authCheck');
 const router = express.Router();
 
@@ -12,11 +12,7 @@ router.get("/myorders", isUserAuthorized, viewMyOrders);
 //Get all orders --> SuperAdmin
 router.get("/", isUserAuthorized, checkAccessLevel("superadmin"), getAllOrders);
 
-
-//Update Order Status --> SuperAdmin
-router.patch("/:id", isUserAuthorized, checkAccessLevel("superadmin"), updateOrderStatus);
-
-//Delete a order --> SuperAdmin
-router.delete("/:id", isUserAuthorized, checkAccessLevel("superadmin"), deleteOrder);
+//Update Order Status --> SuperAdmin,Admin
+router.patch("/update", isUserAuthorized, checkAccessLevel("superadmin", "admin"), updateOrderStatus);
 
 module.exports = router;

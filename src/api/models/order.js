@@ -8,17 +8,18 @@ const orderSchema = new mongoose.Schema({
                 ref: "Product",
                 required: true
             },
-            quantity: Number
+            quantity: Number,
+            status: {
+                type: String,
+                default: "Pending"
+            },
         }
     ],
     orderedBy: {
         type: mongoose.Schema.ObjectId,
         ref: "User"
     },
-    status: {
-        type: String,
-        default: "Pending"
-    },
+
     createdAt: {
         type: Date,
         default: Date.now()
