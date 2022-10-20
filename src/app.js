@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const dotenv = require("dotenv");
-const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const cloudinary = require('cloudinary');
 
@@ -56,7 +55,6 @@ app.use(bodyParser.json());
 app.use(fileUpload({
     useTempFiles: true
 }));
-app.use(cookieParser());
 app.use("/product", productRoutes);
 app.use("/user", userRoutes);
 app.use("/order", orderRoutes);

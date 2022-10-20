@@ -11,7 +11,7 @@ const { uploadImage, deleteImage } = require('../utils/handleImages.js');
 //Signup a new user
 exports.signup = async (req, res, next) => {
     try {
-        //Converting User given password into hashed Password
+        //Checking if email/user already exists in DB
         const existingUser = await User.findOne({ email: req.body.email });
         if (existingUser) {
             return res.status(400).json({
@@ -23,7 +23,6 @@ exports.signup = async (req, res, next) => {
             const result = await uploadImage(req.files.picture, 'profilepic');
             req.body.profilePic = result;
         }
-
 
         //Encrypting The Password
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -37,12 +36,10 @@ exports.signup = async (req, res, next) => {
             expiresIn: "1h"
         });
 
-
         return res.status(201).json({
             success: true,
             access: user.access,
-            token,
-            user
+            token
         })
     } catch (error) {
         console.log(error.stack);
@@ -117,12 +114,12 @@ exports.logout = async (req, res, next) => {
 exports.generateResetPasswordLink = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
     try {
-        const resetToken = crypto.randomBytes(20).toString("hex");
         if (!user) {
             return res.status(404).json({
                 message: "Email doesn't exist."
             })
         }
+        const resetToken = crypto.randomBytes(20).toString("hex");
         user.resetPasswordCode = crypto.createHash("sha256").update(resetToken).digest("hex");
         user.resetPasswordExpiry = Date.now() + 5 * 60 * 1000;
 
